@@ -39,14 +39,18 @@ document.addEventListener('DOMContentLoaded',()=>{
 
 form.addEventListener('submit',addNewTask);
 
-function addNewTask(){
+function addNewTask(e){
+    e.preventDefault();
+
+
     if(!taskInput.value){
         alert("Enter Task ");
         return;
     }
 
     let newTask={
-        taskname:taskInput.value
+        taskname:taskInput.value,
+        date:new Date().getTime(),
     }
 
     let transaction = DB.transaction(['tasks'], 'readwrite');
@@ -69,7 +73,8 @@ function addNewTask(){
 
 function displayTaskList() {
     // clear the previous task list
-    while (taskList.firstChild) {   taskList.removeChild(taskList.firstChild);}
+    while (taskList.firstChild) {   
+        taskList.removeChild(taskList.firstChild);}
 
     // create the object store
     let objectStore = DB.transaction('tasks').objectStore('tasks');
