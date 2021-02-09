@@ -70,25 +70,51 @@ function addNewTask(e){
 
 }
 
-
+sort.addEventListener('change', displayTaskList)
 function displayTaskList() {
     // clear the previous task list
-    while (taskList.firstChild) {   
-        taskList.removeChild(taskList.firstChild);}
+    while (taskList.firstChild) {
+        taskList.removeChild(taskList.firstChild);
+    }
 
     // create the object store
     let objectStore = DB.transaction('tasks').objectStore('tasks');
+    let sort_value = ''
 
-    objectStore.openCursor().onsuccess = function(e) {
+    if (sort.value == '1') {
+        sort_value = "next"
+    } else {
+        sort_value = "prev"
+    }
+    let index = objectStore.index("date");
+    index.openCursor(null, sort_value).onsuccess = function(e) {
         // assign the current cursor
         let cursor = e.target.result;
 
         if (cursor) {
-                
+
+            // Create an li element when the user adds a task 
+            const li = document.createElement('li');
+            //add Attribute for delete 
             li.setAttribute('data-task-id', cursor.value.id);
+            // Adding a class
+            li.className = 'collection-item';
             // Create text node and append it 
             li.appendChild(document.createTextNode(cursor.value.taskname));
-            
+            // Create new element for the link 
+            const link = document.createElement('a');
+            // Add class and the x marker for a 
+            link.className = 'delete-item secondary-content';
+            link.innerHTML = `
+             <i class="fa fa-remove"></i>
+            &nbsp;
+            <a href="edit.html?id=${cursor.value.id}"><i class="fa fa-edit"></i> </a>
+            `;
+            li.dataset.date = cursor.value.date;
+            // Append link to li
+            li.appendChild(link);
+            // Append to UL 
+            taskList.appendChild(li);
             cursor.continue();
         }
     }
