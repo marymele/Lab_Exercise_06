@@ -5,8 +5,11 @@ const taskInput = document.querySelector('#task'); //the task input text field
 //read from q string 
 const urlParams = new URLSearchParams(window.location.search);
 const id = Number(urlParams.get('id'));
+let date;
 //DB
 var DB;
+
+
 
 // Add Event Listener [on Load]
 document.addEventListener('DOMContentLoaded', () => {
@@ -38,6 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
         request.onsuccess = function(event) {
             if (request.result) {
                 taskInput.value = request.result.taskname;
+                date=request.result.date;
 
             } else {
                 console.log('No data record');

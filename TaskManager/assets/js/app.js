@@ -33,6 +33,7 @@ document.addEventListener('DOMContentLoaded',()=>{
         let db = e.target.result;
         let objectStore = db.createObjectStore('tasks', { keyPath: 'id', autoIncrement: true });
         objectStore.createIndex('taskname', 'taskname', { unique: false });
+        objectStore.createIndex('date', 'date', { unique: false });
         console.log('Database ready and fields created!');
 
 }
@@ -108,7 +109,7 @@ function displayTaskList() {
             link.innerHTML = `
              <i class="fa fa-remove"></i>
             &nbsp;
-            <a href="edit.html?id=${cursor.value.id}"><i class="fa fa-edit"></i> </a>
+            <a href="./edit.html?id=${cursor.value.id}"><i class="fa fa-edit"></i> </a>
             `;
             li.dataset.date = cursor.value.date;
             // Append link to li
