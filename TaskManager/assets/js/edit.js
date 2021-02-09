@@ -73,8 +73,22 @@ document.addEventListener('DOMContentLoaded', () => {
         
         */
 
+
+       var transaction = DB.transaction(['tasks'], 'readwrite');
+       var objectStore = transaction.objectStore('tasks');
+
+       const data = {
+           taskname: taskInput.value,
+           date : date,
+           id: id,
+       }
+
+
+       const update = objectStore.put(data);
+       update.onsuccess = () => {
         history.back();
-    }
+       };
+    };
 
 
 
